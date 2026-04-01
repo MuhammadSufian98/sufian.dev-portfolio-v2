@@ -1,65 +1,367 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { animate, stagger } from "animejs";
+import Layout from "@/components/Layout";
+
+export default function HomePage() {
+  const vantaRef = useRef(null);
+  const vantaEffectRef = useRef(null);
+  const lineRef = useRef(null);
+
+  useEffect(() => {
+    const loadVanta = async () => {
+      if (vantaEffectRef.current || !vantaRef.current) return;
+
+      const THREE = await import("three");
+      window.THREE = THREE;
+      const { default: RINGS } = await import("vanta/dist/vanta.rings.min.js");
+
+      vantaEffectRef.current = RINGS({
+        el: vantaRef.current,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        scale: 1.0,
+        backgroundColor: 0x252423,
+        color: 0xdad5d0,
+      });
+    };
+    loadVanta();
+
+    const handleScroll = () => {
+      const scrollPercent =
+        window.scrollY /
+        (document.documentElement.scrollHeight - window.innerHeight);
+
+      const floatingCore = document.querySelector(".floating-core");
+      if (floatingCore) {
+        // Only animate when the target exists to avoid noisy runtime warnings.
+        animate(floatingCore, {
+          translateY: window.scrollY * 0.8,
+          rotate: window.scrollY * 0.15,
+          duration: 0,
+          ease: "linear",
+        });
+      }
+
+      // SVG Line Drawing Logic
+      if (lineRef.current) {
+        const lineLength = lineRef.current.getTotalLength();
+        const draw = lineLength * scrollPercent;
+        lineRef.current.style.strokeDashoffset = lineLength - draw;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      vantaEffectRef.current?.destroy?.();
+      vantaEffectRef.current = null;
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Skill Cards IntersectionObserver Animation
+  useEffect(() => {
+    const skillCards = document.querySelectorAll(".skill-card");
+    const observedCards = new Set();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !observedCards.has(entry.target)) {
+            observedCards.add(entry.target);
+            animate(skillCards, {
+              opacity: [0, 1],
+              translateY: [50, 0],
+              rotateX: [45, 0],
+              delay: stagger(100),
+              ease: "easeOutExpo",
+              duration: 1500,
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
+
+    skillCards.forEach((card) => observer.observe(card));
+
+    return () => {
+      skillCards.forEach((card) => observer.unobserve(card));
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <Layout>
+      <main className="relative bg-[#252423] text-[#DAD5D0] overflow-x-hidden">
+        {/* SECTION 1: HERO (Dark Ring BG) */}
+        <section
+          ref={vantaRef}
+          className="relative h-screen flex flex-col items-center justify-center z-10"
+        >
+          <div className="text-center z-20">
+            <h1 className="text-[15vw] font-black uppercase leading-none tracking-tighter mix-blend-difference">
+              Sufian
+            </h1>
+            <p className="font-mono tracking-[1em] opacity-60">
+              Full-Stack Architect
+            </p>
+          </div>
+        </section>
+
+        {/* SECTION 2: ORIGIN (White, Fully Rounded) */}
+        <section
+          id="origin"
+          className="relative z-30 bg-[#DAD5D0] text-[#252423] py-32 px-10 rounded-[100px] -mt-20 shadow-[0_-50px_100px_rgba(0,0,0,0.3)]"
+        >
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            <div className="relative w-64 h-64 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-[#252423]/10">
+              <Image
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAd2RvRrCj7i4U6QgpVpy1gFmYC0MnggsJbddxo6nlh7zrMQ7PymfZAN6XJe-xRS3esUm90G2tCuBc_tclWv25fZT40uu5rONxPvjgT554f1GEOZy5SuaEolqW61jO0eCQ0XsrABtQi3pDaNtB9bFt8RGkCTLJZCBAkYc4xvJh1P7g8pc_lpMUJXRPMLtN3kumskpOhdWPS2NsZOfKoc2nlXRvFp04lgbyGbRanQ_3oiGUOw5-cUB1oVgaeBRcSY91wtkOENcdljLZ"
+                alt="Sufian"
+                fill
+                sizes="(max-width: 768px) 16rem, 24rem"
+                className="object-cover"
+              />
+            </div>
+            <div className="flex-1 space-y-8">
+              <h2 className="text-6xl font-black uppercase italic tracking-tighter">
+                The Origin
+              </h2>
+              <div className="space-y-6 text-xl md:text-2xl leading-relaxed font-medium opacity-90">
+                <p>
+                  I am a dedicated software engineer with a strong academic
+                  foundation from **The Islamia University of Bahawalpur
+                  (IUB)**. My journey began with a curiosity for how data flows
+                  through the wires, which quickly evolved into a passion for
+                  the full JavaScript ecosystem.
+                </p>
+                <p>
+                  My approach combines the structural integrity of engineering
+                  with the creative flair of a designer. I don't just write
+                  code; I sketch out digital systems that are intuitive,
+                  performant, and delightful to use.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 3: TOOLBELT (Redesigned UI) */}
+        <section
+          id="toolbelt"
+          className="relative py-40 z-20 bg-[#252423] overflow-hidden"
+        >
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex flex-col items-center mb-24">
+              <p className="font-mono text-[10px] tracking-[0.5em] uppercase opacity-40 mb-4">
+                System.Initialize(Capabilities)
+              </p>
+              <h2 className="text-5xl font-black uppercase italic tracking-tighter text-[#DAD5D0]">
+                The Toolbelt
+              </h2>
+            </div>
+
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8"
+              style={{ perspective: "2000px" }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              {[
+                {
+                  name: "MongoDB",
+                  icon: "/icons/mongodb.svg",
+                  tag: "DATA_NODE_01",
+                  accent: "#10b981",
+                  type: "pulse",
+                },
+                {
+                  name: "Express",
+                  icon: "/icons/express.svg",
+                  tag: "ROUTING_V4",
+                  accent: "#fbbf24",
+                  type: "scan",
+                },
+                {
+                  name: "React",
+                  icon: "/icons/react.svg",
+                  tag: "UI_REACTIVE",
+                  accent: "#60a5fa",
+                  type: "orbit",
+                },
+                {
+                  name: "Node.js",
+                  icon: "/icons/nodedotjs.svg",
+                  tag: "RUNTIME_ENV",
+                  accent: "#4ade80",
+                  type: "energy",
+                },
+                {
+                  name: "Next.js",
+                  icon: "/icons/nextdotjs.svg",
+                  tag: "SSR_ENGINE",
+                  accent: "#ffffff",
+                  type: "telescope",
+                },
+              ].map((tech, i) => (
+                <div
+                  key={tech.name}
+                  className="skill-card group relative h-80 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                  style={{
+                    transform: "rotateY(-15deg) rotateX(10deg)",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  {/* Main Card Body */}
+                  <div className="magnetic-target absolute inset-0 bg-[#DAD5D0]/5 border border-[#DAD5D0]/10 rounded-[2rem] p-8 flex flex-col items-center justify-center transition-all duration-500 group-hover:bg-[#DAD5D0] group-hover:text-[#252423] group-hover:rotate-0 group-hover:scale-110 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
+                    {/* 1. Background Unique Animations based on 'type' */}
+                    {tech.type === "scan" && (
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/10 to-transparent h-full w-full -translate-y-full group-hover:animate-scan z-0" />
+                    )}
+
+                    {tech.type === "orbit" && (
+                      <div className="absolute w-40 h-40 border border-[#DAD5D0]/10 rounded-full group-hover:border-[#252423]/20 animate-spin-slow z-0" />
+                    )}
+
+                    {/* 2. Content: Icon and Text */}
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className="w-16 h-16 mb-6 relative group-hover:drop-shadow-xl transition-all duration-500">
+                        <Image
+                          src={tech.icon}
+                          alt={tech.name}
+                          fill
+                          sizes="4rem"
+                          className={`object-contain transition-all duration-500 ${tech.name !== "Next.js" ? "grayscale group-hover:grayscale-0" : ""}`}
+                        />
+                      </div>
+                      <h3 className="text-xl font-black uppercase tracking-widest">
+                        {tech.name}
+                      </h3>
+
+                      {/* Type Specific Visuals */}
+                      {tech.type === "energy" && (
+                        <div className="flex gap-1 mt-4">
+                          {[1, 2, 3].map((bit) => (
+                            <div
+                              key={bit}
+                              className="w-1.5 h-3 bg-green-500/20 group-hover:bg-[#252423]/40 rounded-full group-hover:animate-bounce"
+                              style={{ animationDelay: `${bit * 0.1}s` }}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 3. Footer Metadata */}
+                    <div className="absolute bottom-6 flex justify-between w-full px-8 opacity-20 group-hover:opacity-100 transition-opacity">
+                      <span className="font-mono text-[9px] font-bold tracking-tighter">
+                        {tech.tag}
+                      </span>
+                      <span className="font-mono text-[9px] font-bold italic">
+                        PRO_V26
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 4: PROJECTS (With Connecting Line) */}
+        <section id="projects" className="relative py-60 z-20 bg-[#252423]">
+          {/* THE CENTRAL TIMELINE LINE */}
+          <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-[#DAD5D0]/20 to-transparent z-0" />
+
+          <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-96">
+            {[1, 2].map((proj, i) => (
+              <div
+                key={proj}
+                className={`magnetic-target rounded-2xl group relative flex flex-col ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-12 md:gap-24`}
+              >
+                {/* 1. IMAGE SIDE (The Visual) */}
+                <div className="relative w-full md:w-3/5 aspect-video cursor-none overflow-hidden rounded-[2rem] border border-[#DAD5D0]/10 bg-[#1A1A1A]">
+                  {/* Custom Floating Cursor (Visible on hover) */}
+                  <div className="pointer-events-none absolute z-50 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber-500 bg-amber-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center backdrop-blur-sm shadow-[0_0_30px_rgba(245,158,11,0.3)] project-cursor">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">
+                      View
+                    </span>
+                  </div>
+
+                  <Image
+                    src="/banner/banner.webp"
+                    alt="Project Screenshot"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 60vw"
+                    className="object-cover grayscale transition-all duration-[1.5s] ease-out group-hover:grayscale-0 group-hover:scale-110"
+                  />
+
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#252423] via-transparent to-transparent opacity-60" />
+                </div>
+
+                {/* 2. DETAIL SIDE (The Story) */}
+                <div
+                  className={`w-full md:w-2/5 space-y-8 ${i % 2 === 0 ? "text-left" : "text-right"}`}
+                >
+                  <div className="inline-block px-4 py-1 rounded-full border border-amber-500/30 bg-amber-500/5 text-amber-500 font-mono text-[10px] tracking-[0.2em] uppercase">
+                    Project // 0{proj}
+                  </div>
+
+                  <h3 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-none">
+                    NexusNode{" "}
+                    <span className="text-amber-500 font-serif">AI</span>
+                  </h3>
+
+                  <div className="relative p-6 bg-[#DAD5D0]/5 border-l-4 border-amber-500 backdrop-blur-sm rounded-r-2xl">
+                    <p className="text-lg text-[#DAD5D0]/80 leading-relaxed">
+                      A high-performance Neural Retrieval Engine. Bridging the
+                      gap between static PDF data and dynamic AI conversations
+                      using the MERN ecosystem.
+                    </p>
+                  </div>
+
+                  <div
+                    className={`flex gap-4 ${i % 2 === 0 ? "justify-start" : "justify-end"}`}
+                  >
+                    {["Next.js", "Tailwind", "Anime.js"].map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] font-mono opacity-40 uppercase tracking-widest"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. THE "BRIDGE" CONNECTOR (Anime Line) */}
+                <div
+                  className={`hidden md:block absolute top-1/2 ${i % 2 === 0 ? "left-[50%] right-[40%]" : "right-[50%] left-[40%]"} h-px bg-gradient-to-r from-amber-500 to-transparent -z-10 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left`}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION 5: QUOTE (End of Line) */}
+        <section className="relative h-screen flex flex-col items-center justify-center z-30 bg-[#DAD5D0] text-[#252423] rounded-t-[100px]">
+          <div className="max-w-4xl text-center px-6">
+            <span className="text-6xl text-amber-600 font-serif leading-none">
+              “
+            </span>
+            <blockquote className="text-4xl md:text-7xl font-serif italic leading-tight -mt-4">
+              Code is not just logic; it's the rhythm of a digital story.
+            </blockquote>
+            <p className="mt-12 font-mono text-xs tracking-widest opacity-40 uppercase">
+              Sufian // Student @ IUB // Developer
+            </p>
+          </div>
+        </section>
       </main>
-    </div>
+    </Layout>
   );
 }

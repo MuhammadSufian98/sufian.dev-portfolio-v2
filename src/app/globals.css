@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #cbe0e0;
+  --foreground: #025169;
+  --secondary-bg: #11202c;
+  --accent-soft: #2d8ca8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), sans-serif;
+  background-image:
+    radial-gradient(circle at 12% 10%, rgba(17, 32, 44, 0.08), transparent 36%),
+    radial-gradient(circle at 84% 26%, rgba(2, 81, 105, 0.12), transparent 38%),
+    linear-gradient(165deg, #d8ebeb, #cbe0e0 52%, #c0d6d6);
+}
+
+* {
+  border-color: rgba(2, 81, 105, 0.16);
+}
+
+::selection {
+  background: rgba(17, 32, 44, 0.22);
+  color: #023247;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-scan {
+  animation: scan 2s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+.skill-card:hover {
+  transform: rotateY(0deg) rotateX(0deg) !important;
+  z-index: 50;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  [role="button"],
+  [class*="cursor-"] {
+    cursor: none !important;
+  }
 }
