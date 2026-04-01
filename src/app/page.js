@@ -9,6 +9,15 @@ export default function HomePage() {
   const vantaRef = useRef(null);
   const vantaEffectRef = useRef(null);
   const lineRef = useRef(null);
+  
+  // Hero & Origin Scroll Effect Refs
+  const heroContainerRef = useRef(null);
+  const h1Ref = useRef(null);
+  const letterIRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const originBgRef = useRef(null);
+  const originOverlayRef = useRef(null);
+  const originContentRef = useRef(null);
 
   useEffect(() => {
     const loadVanta = async () => {
@@ -31,6 +40,31 @@ export default function HomePage() {
     };
     loadVanta();
 
+    const updateTransformOrigin = () => {
+      if (!h1Ref.current || !letterIRef.current) return;
+      
+      const currentTransform = h1Ref.current.style.transform;
+      h1Ref.current.style.transform = "none";
+      
+      const h1Rect = h1Ref.current.getBoundingClientRect();
+      const iRect = letterIRef.current.getBoundingClientRect();
+      
+      const originX = iRect.left + iRect.width / 2 - h1Rect.left;
+      const originY = iRect.top + iRect.height / 2 - h1Rect.top;
+      
+      const originXPercent = (originX / h1Rect.width) * 100;
+      const originYPercent = (originY / h1Rect.height) * 100;
+      
+      h1Ref.current.style.transformOrigin = `${originXPercent}% ${originYPercent}%`;
+      h1Ref.current.style.transform = currentTransform;
+    };
+
+    updateTransformOrigin();
+    window.addEventListener("resize", updateTransformOrigin);
+    if (document.fonts) {
+      document.fonts.ready.then(updateTransformOrigin);
+    }
+
     const handleScroll = () => {
       const scrollPercent =
         window.scrollY /
@@ -38,7 +72,6 @@ export default function HomePage() {
 
       const floatingCore = document.querySelector(".floating-core");
       if (floatingCore) {
-        // Only animate when the target exists to avoid noisy runtime warnings.
         animate(floatingCore, {
           translateY: window.scrollY * 0.8,
           rotate: window.scrollY * 0.15,
@@ -47,19 +80,56 @@ export default function HomePage() {
         });
       }
 
-      // SVG Line Drawing Logic
-      if (lineRef.current) {
+      if (lineRef.current && lineRef.current.getTotalLength) {
         const lineLength = lineRef.current.getTotalLength();
         const draw = lineLength * scrollPercent;
         lineRef.current.style.strokeDashoffset = lineLength - draw;
       }
+
+      // Hero & Origin Zoom Logic
+      if (heroContainerRef.current) {
+        const rect = heroContainerRef.current.getBoundingClientRect();
+        const scrollTop = -rect.top;
+        const maxScroll = Math.max(1, rect.height - window.innerHeight);
+        
+        // Progress goes from 0 to 1
+        const progress = Math.max(0, Math.min(1, scrollTop / maxScroll));
+
+        // Part 1: Text Scale (0.0 to 0.25)
+        const textProgress = Math.min(1, progress / 0.25);
+        const easedTextProgress = Math.pow(textProgress, 4);
+        const textScale = 1 + easedTextProgress * 250;
+        
+        if (h1Ref.current) h1Ref.current.style.transform = `scale(${textScale})`;
+        if (subtitleRef.current) subtitleRef.current.style.opacity = 1 - textProgress * 2;
+
+        // Part 2: Background Match Fade In (0.22 to 0.25)
+        if (originBgRef.current) {
+            const bgProgress = Math.max(0, Math.min(1, (progress - 0.22) / 0.03));
+            originBgRef.current.style.opacity = bgProgress;
+        }
+
+        // Part 3: Origin Content Reveal & Scale (0.25 to 0.6)
+        const originProgress = Math.max(0, Math.min(1, (progress - 0.25) / 0.35));
+        if (originOverlayRef.current) {
+            originOverlayRef.current.style.opacity = originProgress;
+            originOverlayRef.current.style.pointerEvents = originProgress > 0.5 ? 'auto' : 'none';
+        }
+        if (originContentRef.current) {
+            const originScale = 0.8 + originProgress * 0.2;
+            originContentRef.current.style.transform = `scale(${originScale})`;
+        }
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
     return () => {
       vantaEffectRef.current?.destroy?.();
       vantaEffectRef.current = null;
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateTransformOrigin);
     };
   }, []);
 
@@ -97,55 +167,79 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <main className="relative bg-[#252423] text-[#DAD5D0] overflow-x-hidden">
-        {/* SECTION 1: HERO (Dark Ring BG) */}
-        <section
-          ref={vantaRef}
-          className="relative h-screen flex flex-col items-center justify-center z-10"
-        >
-          <div className="text-center z-20">
-            <h1 className="text-[15vw] font-black uppercase leading-none tracking-tighter mix-blend-difference">
-              Sufian
-            </h1>
-            <p className="font-mono tracking-[1em] opacity-60">
-              Full-Stack Architect
-            </p>
-          </div>
-        </section>
+      <main className="relative bg-[#252423] text-[#DAD5D0] overflow-clip">
+        {/* SECTION 1 & 2: HERO & ORIGIN (Zoom Through Text Experience) */}
+        <section ref={heroContainerRef} className="relative h-[200vh] z-30">
+          <div className="sticky top-0 h-screen overflow-hidden bg-[#252423]">
+            {/* Vanta Canvas */}
+            <div ref={vantaRef} className="absolute inset-0 z-0" />
 
-        {/* SECTION 2: ORIGIN (White, Fully Rounded) */}
-        <section
-          id="origin"
-          className="relative z-30 bg-[#DAD5D0] text-[#252423] py-32 px-10 rounded-[100px] -mt-20 shadow-[0_-50px_100px_rgba(0,0,0,0.3)]"
-        >
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
-            <div className="relative w-64 h-64 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-[#252423]/10">
-              <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAd2RvRrCj7i4U6QgpVpy1gFmYC0MnggsJbddxo6nlh7zrMQ7PymfZAN6XJe-xRS3esUm90G2tCuBc_tclWv25fZT40uu5rONxPvjgT554f1GEOZy5SuaEolqW61jO0eCQ0XsrABtQi3pDaNtB9bFt8RGkCTLJZCBAkYc4xvJh1P7g8pc_lpMUJXRPMLtN3kumskpOhdWPS2NsZOfKoc2nlXRvFp04lgbyGbRanQ_3oiGUOw5-cUB1oVgaeBRcSY91wtkOENcdljLZ"
-                alt="Sufian"
-                fill
-                sizes="(max-width: 768px) 16rem, 24rem"
-                className="object-cover"
-              />
+            {/* Big Text Layer */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+              <h1 
+                ref={h1Ref} 
+                className="text-[15vw] font-black uppercase leading-none tracking-tighter flex text-[#DAD5D0] will-change-transform"
+              >
+                <span>S</span>
+                <span>U</span>
+                <span>F</span>
+                <span ref={letterIRef}>I</span>
+                <span>A</span>
+                <span>N</span>
+              </h1>
+              <p 
+                ref={subtitleRef} 
+                className="font-mono tracking-[1em] opacity-60 text-[#DAD5D0] mt-4 will-change-opacity"
+              >
+                Full-Stack Architect
+              </p>
             </div>
-            <div className="flex-1 space-y-8">
-              <h2 className="text-6xl font-black uppercase italic tracking-tighter">
-                The Origin
-              </h2>
-              <div className="space-y-6 text-xl md:text-2xl leading-relaxed font-medium opacity-90">
-                <p>
-                  I am a dedicated software engineer with a strong academic
-                  foundation from **The Islamia University of Bahawalpur
-                  (IUB)**. My journey began with a curiosity for how data flows
-                  through the wires, which quickly evolved into a passion for
-                  the full JavaScript ecosystem.
-                </p>
-                <p>
-                  My approach combines the structural integrity of engineering
-                  with the creative flair of a designer. I don't just write
-                  code; I sketch out digital systems that are intuitive,
-                  performant, and delightful to use.
-                </p>
+
+            {/* Section 2 Details */}
+            {/* Solid background matching text color, fades in to prevent zooming artifacts */}
+            <div 
+              ref={originBgRef} 
+              className="absolute inset-0 z-[15] bg-[#DAD5D0] opacity-0 pointer-events-none will-change-opacity" 
+            />
+
+            {/* Section 2 Content */}
+            <div 
+              ref={originOverlayRef} 
+              className="absolute inset-0 z-20 flex items-center justify-center opacity-0 pointer-events-none text-[#252423] will-change-opacity overflow-hidden"
+            >
+              <div 
+                ref={originContentRef} 
+                className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-16 px-6 md:px-10 scale-75 will-change-transform"
+              >
+                <div className="relative w-48 h-48 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-[#252423]/10 flex-shrink-0">
+                  <Image
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAd2RvRrCj7i4U6QgpVpy1gFmYC0MnggsJbddxo6nlh7zrMQ7PymfZAN6XJe-xRS3esUm90G2tCuBc_tclWv25fZT40uu5rONxPvjgT554f1GEOZy5SuaEolqW61jO0eCQ0XsrABtQi3pDaNtB9bFt8RGkCTLJZCBAkYc4xvJh1P7g8pc_lpMUJXRPMLtN3kumskpOhdWPS2NsZOfKoc2nlXRvFp04lgbyGbRanQ_3oiGUOw5-cUB1oVgaeBRcSY91wtkOENcdljLZ"
+                    alt="Sufian"
+                    fill
+                    sizes="(max-width: 768px) 16rem, 24rem"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex-1 space-y-4 md:space-y-8 text-center md:text-left">
+                  <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter">
+                    The Origin
+                  </h2>
+                  <div className="space-y-4 md:space-y-6 text-lg md:text-2xl leading-relaxed font-medium opacity-90 text-[#252423]">
+                    <p>
+                      I am a dedicated software engineer with a strong academic
+                      foundation from **The Islamia University of Bahawalpur
+                      (IUB)**. My journey began with a curiosity for how data flows
+                      through the wires, which quickly evolved into a passion for
+                      the full JavaScript ecosystem.
+                    </p>
+                    <p>
+                      My approach combines the structural integrity of engineering
+                      with the creative flair of a designer. I don't just write
+                      code; I sketch out digital systems that are intuitive,
+                      performant, and delightful to use.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
