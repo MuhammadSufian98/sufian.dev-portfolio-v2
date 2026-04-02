@@ -1,6 +1,5 @@
 import { Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
-import WelcomeLoader from "@/components/WelcomeLoader";
 import GlobalBackgroundLayer from "@/components/GlobalBackgroundLayer";
 import CustomLayout from "@/components/CustomLayout";
 
@@ -30,7 +29,6 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col relative">
         <GlobalBackgroundLayer />
-        <WelcomeLoader />
         <CustomLayout>{children}</CustomLayout>
       </body>
     </html>

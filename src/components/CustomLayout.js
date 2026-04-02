@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -10,12 +11,18 @@ const EXCLUDED_PATHS = [];
 
 const CustomLayout = ({ children }) => {
   const pathname = usePathname();
+  const [isBooting, setIsBooting] = useState(true);
   const shouldHideLayout = EXCLUDED_PATHS.includes(pathname);
+  const handleBootComplete = useCallback(() => {
+    setIsBooting(false);
+  }, []);
 
   return (
     <>
       {!shouldHideLayout && <CustomCursor />}
-      {!shouldHideLayout && <Header />}
+      {!shouldHideLayout && (
+        <Header isBooting={isBooting} onBootComplete={handleBootComplete} />
+      )}
       {children}
       {!shouldHideLayout && <Footer />}
     </>
