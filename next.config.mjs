@@ -3,6 +3,21 @@ const nextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
+    localPatterns: [
+      {
+        pathname: "/assets/**",
+        search: "?v=20260401",
+      },
+      {
+        pathname: "/banner/**",
+      },
+      {
+        pathname: "/icons/**",
+      },
+      {
+        pathname: "/blobs/**",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",

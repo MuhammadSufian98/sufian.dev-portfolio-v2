@@ -1,10 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #cbe0e0;
-  --foreground: #025169;
-  --secondary-bg: #11202c;
-  --accent-soft: #2d8ca8;
+  --obsidian: #323130;
+  --stone: #dcd7d3;
+  --golden-amber: #ffb347;
+  --obsidian-deep: #252423;
+  --golden-shadow: rgba(212, 143, 41, 0.15);
+
+  --background: var(--obsidian);
+  --foreground: var(--stone);
+  --surface-light: var(--stone);
+  --surface-dark: var(--obsidian);
+  --accent: var(--golden-amber);
 }
 
 @theme inline {
@@ -23,18 +30,18 @@ body {
   color: var(--foreground);
   font-family: var(--font-jakarta), sans-serif;
   background-image:
-    radial-gradient(circle at 12% 10%, rgba(17, 32, 44, 0.08), transparent 36%),
-    radial-gradient(circle at 84% 26%, rgba(2, 81, 105, 0.12), transparent 38%),
-    linear-gradient(165deg, #d8ebeb, #cbe0e0 52%, #c0d6d6);
+    radial-gradient(circle at 15% 10%, rgba(255, 179, 71, 0.08), transparent 42%),
+    radial-gradient(circle at 82% 28%, rgba(255, 179, 71, 0.06), transparent 44%),
+    linear-gradient(165deg, #2d2c2b, #323130 58%, #2a2928);
 }
 
 * {
-  border-color: rgba(2, 81, 105, 0.16);
+  border-color: rgba(255, 179, 71, 0.18);
 }
 
 ::selection {
-  background: rgba(17, 32, 44, 0.22);
-  color: #023247;
+  background: rgba(255, 179, 71, 0.3);
+  color: #1f1e1d;
 }
 
 @keyframes scan {
