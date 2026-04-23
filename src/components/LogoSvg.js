@@ -1,4 +1,3 @@
-// src/components/Logos/VortexVariations/NexusVortex.jsx
 import React from "react";
 
 const SufianLogo = ({ className = "", size = 48 }) => {
