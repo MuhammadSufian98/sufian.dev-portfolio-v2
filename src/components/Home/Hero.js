@@ -53,13 +53,13 @@ export default function Hero({
           </h1>
           <div
             ref={subtitleRef}
-            className="flex items-center gap-4 mt-4 will-change-opacity"
+            className="flex items-center gap-2 sm:gap-4 mt-2 sm:mt-4 will-change-opacity"
           >
-            <span className="h-[1px] w-12 bg-amber-500/50" />
-            <p className="font-mono text-xs tracking-[0.8em] uppercase text-white/40">
+            <span className="h-[1px] w-6 sm:w-12 bg-amber-500/50" />
+            <p className="font-mono text-[8px] sm:text-xs tracking-[0.4em] sm:tracking-[0.8em] uppercase text-white/40 whitespace-nowrap">
               Full-Stack Software Engineer
             </p>
-            <span className="h-[1px] w-12 bg-amber-500/50" />
+            <span className="h-[1px] w-6 sm:w-12 bg-amber-500/50" />
           </div>
         </div>
 
