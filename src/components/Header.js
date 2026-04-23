@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  RiCloseLine,
   RiMenu4Line,
+  RiCloseLine,
   RiMoonClearLine,
   RiSunLine,
   RiPulseFill,
@@ -45,9 +45,13 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
     window.requestAnimationFrame(tick);
   }, [isBooting, onBootComplete]);
 
-  // Prevent scroll when mobile menu is open
+  // Prevent scroll when menu is open
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
   }, [isMobileMenuOpen]);
 
   return (
@@ -82,7 +86,7 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
               </Link>
             </div>
 
-            {/* CENTER: Desktop Nav */}
+            {/* CENTER: Desktop Navigation */}
             <div className="hidden md:flex items-center h-full">
               {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href;
@@ -110,9 +114,9 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
               })}
             </div>
 
-            {/* RIGHT: Actions */}
-            <div className="flex items-center gap-4">
-              <div className="hidden lg:flex flex-col items-end border-r border-white/10 pr-6 mr-2">
+            {/* RIGHT: System Actions */}
+            <div className="flex items-center gap-2 md:gap-6">
+              <div className="hidden md:flex flex-col items-end border-r border-white/10 pr-6">
                 <div className="flex items-center gap-2">
                   <RiPulseFill
                     className="text-amber-500 animate-pulse"
@@ -135,7 +139,7 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
                 )}
               </button>
 
-              {/* Mobile Toggle */}
+              {/* MOBILE MENU TOGGLE */}
               <button
                 className="md:hidden p-2 text-white/60"
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -147,7 +151,7 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
         ) : null}
       </nav>
 
-      {/* MOBILE MENU OVERLAY */}
+      {/* MOBILE OVERLAY MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -158,7 +162,6 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
             className="fixed inset-0 z-[200] flex flex-col"
             style={{ backgroundColor: activeTheme.colors.background.primary }}
           >
-            {/* Menu Header */}
             <div className="flex items-center justify-between h-16 px-6 border-b border-white/5">
               <span className="font-mono text-[10px] tracking-widest text-white/20 uppercase">
                 Navigation_Menu
@@ -171,7 +174,6 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
               </button>
             </div>
 
-            {/* Menu Links */}
             <div className="flex-1 flex flex-col justify-center px-8 space-y-8">
               {NAV_ITEMS.map((item, i) => (
                 <motion.div
@@ -202,7 +204,6 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
               ))}
             </div>
 
-            {/* Menu Footer */}
             <div className="p-8 border-t border-white/5 space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
@@ -218,31 +219,100 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
         )}
       </AnimatePresence>
 
-      {/* Boot Loader (Unchanged logic, ensures visibility) */}
+      {/* BOOT LOADER (Visible only during isBooting stage) */}
       {isBooting && bootStage === "loading" && (
         <div
-          className="fixed inset-0 z-[250] flex flex-col items-center justify-center p-6"
+          className="fixed inset-0 z-[140] flex flex-col items-center justify-center p-6"
           style={{ backgroundColor: activeTheme.colors.background.primary }}
         >
-          <motion.div layoutId="header-shell" className="w-full max-w-2xl px-4">
-            {/* ... existing boot loader content ... */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-8">
-              <div className="space-y-4">
-                <SufianLogo size={48} />
-                <h2 className="text-3xl font-black italic text-white uppercase tracking-tighter">
-                  Sufian.Dev
-                </h2>
+          <motion.div layoutId="header-shell" className="w-full max-w-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end mb-12">
+              <div className="space-y-6 text-center md:text-left">
+                <motion.div
+                  layoutId="boot-logo"
+                  className="text-amber-500 flex justify-center md:justify-start"
+                >
+                  <SufianLogo size={64} />
+                </motion.div>
+                <div className="space-y-1">
+                  <motion.h2
+                    layoutId="boot-name"
+                    className="text-3xl font-bold font-mono tracking-tighter uppercase italic"
+                    style={{ color: activeTheme.colors.text.heading }}
+                  >
+                    SUFIAN<span className="text-amber-500">.</span>DEV
+                  </motion.h2>
+                  <p
+                    className="font-mono text-[9px] uppercase tracking-[0.4em]"
+                    style={{ color: activeTheme.colors.text.muted }}
+                  >
+                    Preparing Portfolio Experience
+                  </p>
+                </div>
               </div>
-              <div className="font-mono text-[8px] text-white/20 uppercase text-left md:text-right">
-                <p>Status: Initializing</p>
-                <p>Env: Production_v4</p>
+              <div
+                className="hidden md:block font-mono text-[8px] uppercase space-y-1 text-right"
+                style={{ color: activeTheme.colors.text.muted }}
+              >
+                <p>Location: Multan, Pakistan</p>
+                <p>Focus: Full-Stack Development</p>
+                <p>Stack: Next.js, React, Node.js</p>
               </div>
             </div>
-            <div className="h-px w-full bg-white/10 relative">
-              <motion.div
-                className="absolute inset-y-0 left-0 bg-amber-500"
-                style={{ width: `${progress * 100}%` }}
-              />
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-mono text-[10px] uppercase">
+                <span
+                  className="flex gap-2"
+                  style={{ color: activeTheme.colors.accent.primary }}
+                >
+                  <span className="animate-pulse">_</span> Loading Experience
+                </span>
+                <span style={{ color: activeTheme.colors.accent.primary }}>
+                  {Math.round(progress * 100)}%
+                </span>
+              </div>
+              <div
+                className="h-[1px] w-full relative"
+                style={{ backgroundColor: activeTheme.colors.border.subtle }}
+              >
+                <motion.div
+                  className="absolute top-0 left-0 h-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"
+                  style={{ width: `${progress * 100}%` }}
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-4 font-mono text-[7px] uppercase pt-2">
+                <span
+                  style={{
+                    color:
+                      progress > 0.3
+                        ? activeTheme.colors.accent.primary
+                        : activeTheme.colors.text.muted,
+                  }}
+                >
+                  Interface Ready
+                </span>
+                <span
+                  style={{
+                    color:
+                      progress > 0.6
+                        ? activeTheme.colors.accent.primary
+                        : activeTheme.colors.text.muted,
+                  }}
+                >
+                  Data Connected
+                </span>
+                <span
+                  style={{
+                    color:
+                      progress > 0.9
+                        ? activeTheme.colors.accent.primary
+                        : activeTheme.colors.text.muted,
+                  }}
+                >
+                  Visuals Active
+                </span>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -252,4 +322,3 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
 };
 
 export default Header;
-
