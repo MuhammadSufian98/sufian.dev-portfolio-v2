@@ -252,3 +252,4 @@ const Header = ({ isBooting = false, onBootComplete = () => {} }) => {
 };
 
 export default Header;
+
