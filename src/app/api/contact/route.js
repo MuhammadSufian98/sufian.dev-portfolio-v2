@@ -86,6 +86,18 @@ async function isLikelyValidSenderEmail(email) {
 
 export async function POST(request) {
   try {
+    // Check if contact feature is enabled
+    const contactEnabled = String(process.env.NEXT_PUBLIC_CONTACT_ENABLED || "false").trim() === "true";
+    if (!contactEnabled) {
+      return Response.json(
+        {
+          success: false,
+          error: "Contact feature is currently disabled.",
+        },
+        { status: 503 },
+      );
+    }
+
     const apiKey = String(process.env.RESEND_API_KEY || "").trim();
     const receiverEmail = String(process.env.CONTACT_RECEIVER_EMAIL || "").trim();
 

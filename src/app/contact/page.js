@@ -20,6 +20,8 @@ const initialForm = {
   message: "",
 };
 
+const CONTACT_ENABLED = process.env.NEXT_PUBLIC_CONTACT_ENABLED === "true";
+
 function LetterSentGraphic() {
   return (
     <div className="bg-[#1A1A1A] border border-amber-500/20 p-12 text-center max-w-xl mx-auto rounded-3xl shadow-[0_0_30px_rgba(245,158,11,0.05)] relative overflow-hidden">
@@ -35,6 +37,26 @@ function LetterSentGraphic() {
 
       <p className="text-[#DAD5D0]/60 font-mono tracking-widest uppercase text-xs">
         Signal #001 locked. Awaiting system response.
+      </p>
+    </div>
+  );
+}
+
+function FeatureWIPGraphic() {
+  return (
+    <div className="bg-[#1A1A1A] border border-amber-500/20 p-12 text-center max-w-xl mx-auto rounded-3xl shadow-[0_0_30px_rgba(245,158,11,0.05)] relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-amber-500/5 to-transparent opacity-50 pointer-events-none" />
+
+      <div className="w-24 h-24 mx-auto mb-8 bg-amber-500/10 rounded-full flex items-center justify-center border border-amber-500/20">
+        <RiTerminalBoxLine size={40} className="text-amber-500" />
+      </div>
+
+      <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter text-[#DAD5D0] mb-4">
+        System Offline
+      </h2>
+
+      <p className="text-[#DAD5D0]/60 font-mono tracking-widest uppercase text-xs">
+        Feature still WIP please visit later
       </p>
     </div>
   );
@@ -98,18 +120,33 @@ export default function ContactPage() {
             {/* Terminal Header */}
             <div className="bg-[#1A1A1A] px-6 py-3 border-b border-white/10 flex items-center justify-between">
               <div className="flex gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/40" />
+                {!CONTACT_ENABLED ? (
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                ) : (
+                  <>
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/40" />
+                  </>
+                )}
               </div>
               <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">
-                uplink_connection.secure
+                {!CONTACT_ENABLED ? "uplink_connection.offline" : "uplink_connection.secure"}
               </span>
             </div>
 
             <div className="p-8 md:p-14">
               <AnimatePresence mode="wait">
-                {isSuccess ? (
+                {!CONTACT_ENABLED ? (
+                  <motion.div
+                    key="disabled"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="py-12"
+                  >
+                    <FeatureWIPGraphic />
+                  </motion.div>
+                ) : isSuccess ? (
                   <motion.div
                     key="success"
                     initial={{ opacity: 0 }}
