@@ -78,8 +78,14 @@ const Footer = () => {
                   icon: <RiGithubFill size={20} />,
                   href: "https://github.com/MuhammadSufian98",
                 },
-                { icon: <RiLinkedinBoxFill size={20} />, href: "#" },
-                { icon: <RiInstagramFill size={20} />, href: "#" },
+                {
+                  icon: <RiLinkedinBoxFill size={20} />,
+                  href: "https://www.linkedin.com/in/muhammad-sufian-66a6bb32b/",
+                },
+                {
+                  icon: <RiInstagramFill size={20} />,
+                  href: "https://www.instagram.com/muhammad_sufian98/",
+                },
               ].map((social, i) => (
                 <a
                   key={i}
@@ -135,7 +141,10 @@ const Footer = () => {
               >
                 Environment
               </h4>
-              <div className="space-y-4 font-mono text-[11px] uppercase" style={{ color: footerVars.subdued }}>
+              <div
+                className="space-y-4 font-mono text-[11px] uppercase"
+                style={{ color: footerVars.subdued }}
+              >
                 <div className="flex items-center gap-3">
                   <RiMapPinLine style={{ color: footerVars.accent }} />
                   <span>Multan // PK_NODE_01</span>
@@ -159,10 +168,16 @@ const Footer = () => {
           style={{ borderTop: `1px solid ${footerVars.borderColor}` }}
         >
           <div className="flex flex-col items-center md:items-start gap-1">
-            <p className="text-[10px] font-mono tracking-[0.2em] uppercase font-bold" style={{ color: footerVars.subdued }}>
+            <p
+              className="text-[10px] font-mono tracking-[0.2em] uppercase font-bold"
+              style={{ color: footerVars.subdued }}
+            >
               © 2026 Muhammad Sufian — [ Global_Access_Enabled ]
             </p>
-            <p className="text-[8px] font-mono tracking-widest uppercase" style={{ color: footerVars.subdued }}>
+            <p
+              className="text-[8px] font-mono tracking-widest uppercase"
+              style={{ color: footerVars.subdued }}
+            >
               Lat: 30.1575° N // Long: 71.5249° E
             </p>
           </div>
@@ -174,7 +189,10 @@ const Footer = () => {
               border: `1px solid ${footerVars.borderColor}`,
             }}
           >
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: footerVars.accent }} />
+            <span
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ backgroundColor: footerVars.accent }}
+            />
             <span className="font-mono text-[9px] uppercase tracking-[0.4em] font-bold">
               System_Status: Optimal
             </span>
