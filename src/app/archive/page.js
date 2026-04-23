@@ -136,161 +136,170 @@ export default async function GitHubArchivePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#252423] text-[#DAD5D0] overflow-hidden pt-24 pb-40">
-        <div className="max-w-7xl mx-auto px-6 relative z-20">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] uppercase text-[#DAD5D0]/40 hover:text-amber-500 transition-colors mb-20"
-          >
-            <RiArrowLeftLine /> Back to Engine
-          </Link>
+    <main className="min-h-screen theme-bg-primary theme-text-primary selection:bg-amber-500/30 font-sans">
+      {/* Dynamic Grid Overlay */}
+      <div
+        className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-          {/* HERO BANNER SECTION */}
-          <section
-            id="archive-overview"
-            className="relative bg-[#1A1A1A] border border-[#DAD5D0]/10 rounded-3xl p-10 md:p-16 overflow-hidden mb-24 shadow-2xl"
-          >
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      {/* Background Glows */}
+      <div className="fixed top-[-10%] right-[-5%] w-[500px] h-[500px] bg-amber-600/10 blur-[120px] rounded-full pointer-events-none" />
 
-            <div className="relative z-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
-              <div className="space-y-6">
-                <div className="inline-block px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/5 text-amber-500 font-mono text-[10px] tracking-[0.2em] uppercase">
-                  Git Commit Narrative
-                </div>
-
-                <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter leading-none text-[#DAD5D0]">
-                  Muhammad{" "}
-                  <span className="text-amber-500 font-serif">Sufian</span>
-                </h1>
-
-                <p className="text-xl text-[#DAD5D0]/60 max-w-xl italic leading-relaxed">
-                  A real-time engineering manifest. Pulling live architecture
-                  blueprints, repository history, and graphite commit smudges
-                  via GitHub API.
-                </p>
-
-                <div className="flex items-center gap-3 pt-6">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shadow-[0_0_10px_#f59e0b]" />
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#DAD5D0]/40">
-                    Source: github.com/
-                    {error
-                      ? process.env.GITHUB_USERNAME || DEFAULT_GITHUB_USERNAME
-                      : data?.username}
-                  </p>
-                </div>
-              </div>
-
-              {!error && (
-                <div className="flex gap-4">
-                  <div className="bg-[#252423] border border-[#DAD5D0]/10 rounded-2xl p-6 text-center min-w-32 flex flex-col justify-center items-center shadow-inner">
-                    <span className="block text-5xl font-black text-amber-500 mb-2">
-                      {formatNumber(data.totalContributions)}
-                    </span>
-                    <span className="text-[10px] font-mono tracking-widest text-[#DAD5D0]/40 uppercase">
-                      Contributions
-                    </span>
-                  </div>
-                  <div className="bg-[#252423] border border-[#DAD5D0]/10 rounded-2xl p-6 text-center min-w-32 flex flex-col justify-center items-center shadow-inner">
-                    <span className="block text-5xl font-black text-amber-500 mb-2">
-                      {formatNumber(data.user.public_repos)}
-                    </span>
-                    <span className="text-[10px] font-mono tracking-widest text-[#DAD5D0]/40 uppercase">
-                      Repositories
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {error && (
-              <div className="mt-8 border border-red-500/20 bg-red-500/5 p-6 rounded-2xl text-red-400 font-medium flex items-center gap-4">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
-                {error}
-              </div>
-            )}
-          </section>
+      <div className="max-w-7xl mx-auto px-6 pt-32 pb-24 relative z-10">
+        {/* HEADER: Technical Identity */}
+        <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20 border-l-2 border-amber-500 pl-8">
+          <div className="space-y-2">
+            <Link
+              href="/"
+              className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/40 hover:text-amber-500 transition-colors flex items-center gap-2 mb-4"
+            >
+              <RiArrowLeftLine /> Root_Directory
+            </Link>
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase leading-none">
+              Sufian<span className="text-amber-500">.</span>Archive
+            </h1>
+            <p className="text-white/40 font-mono text-xs uppercase tracking-widest">
+              Automated Documentation & Git Metrics // Version 2026.4.23
+            </p>
+          </div>
 
           {!error && (
-            <>
-              {/* REPOSITORIES VIEW */}
+            <div className="flex flex-wrap gap-1">
+              <div className="bg-[#111] border border-white/5 p-4 rounded-sm hover:bg-amber-500 hover:text-black transition-all group cursor-default">
+                <p className="text-[9px] font-mono uppercase tracking-tighter opacity-60">
+                  Commits_YTD
+                </p>
+                <p className="text-3xl font-bold leading-none">
+                  {formatNumber(data.totalContributions)}
+                </p>
+              </div>
+              <div className="bg-[#111] border border-white/5 p-4 rounded-sm hover:bg-amber-500 hover:text-black transition-all group cursor-default">
+                <p className="text-[9px] font-mono uppercase tracking-tighter opacity-60">
+                  Repo_Count
+                </p>
+                <p className="text-3xl font-bold leading-none">
+                  {formatNumber(data.user.public_repos)}
+                </p>
+              </div>
+            </div>
+          )}
+        </header>
+
+        {error ? (
+          <div className="p-20 border border-dashed border-red-500/30 bg-red-500/5 text-center rounded-lg">
+            <span className="font-mono text-red-500">
+              ERROR_FETCH_FAILED: Link to GitHub API severed.
+            </span>
+          </div>
+        ) : (
+          <div className="space-y-24">
+            {/* REPOSITORIES SECTION */}
+            <section className="relative">
+              <div className="flex items-center gap-4 mb-10">
+                <div className="h-px flex-1 bg-gradient-to-r from-amber-500/50 to-transparent" />
+                <h2 className="font-mono text-[10px] uppercase tracking-[0.5em] text-white/30 whitespace-nowrap">
+                  Deployments & Blueprints
+                </h2>
+              </div>
               <RepositoriesSection
                 activeRepos={data.activeRepos}
                 allRepos={data.allRepos}
               />
+            </section>
 
-              {/* QUICK REACH SECTION */}
-              <section className="mb-24">
-                <div className="max-w-xl ml-auto bg-amber-500 text-[#252423] rounded-[2.5rem] p-10 flex flex-col justify-between shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden group">
-                  <div className="absolute -inset-2 bg-gradient-to-tr from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-in-out -translate-x-[150%] skew-x-12" />
-
-                  <div>
-                    <h3 className="text-4xl sm:text-5xl font-black mb-6 uppercase italic tracking-tighter">
-                      Commission
-                    </h3>
-                    <p className="text-[#252423]/70 font-medium leading-relaxed">
-                      Seeking complex architectural blueprints and interactive
-                      narratives for late 2026. Ready to deploy.
-                    </p>
+            {/* ACTIVITY LOG: Terminal Style */}
+            <section>
+              <div className="bg-[#0D0D0D] border border-white/10 rounded-lg overflow-hidden shadow-2xl">
+                <div className="bg-[#1A1A1A] px-4 py-2 border-b border-white/10 flex items-center justify-between">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500/20" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/20" />
                   </div>
-
-                  <Link
-                    href="/contact"
-                    className="mt-12 bg-[#252423] text-[#DAD5D0] py-5 px-8 rounded-full text-center font-mono font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#1a1918] transition-colors"
-                  >
-                    <RiGitRepositoryLine size={20} className="text-amber-500" />{" "}
-                    Draft a Message
-                  </Link>
-                </div>
-              </section>
-
-              {/* RECENT COMMITS LAYER */}
-              <section id="archive-commits" className="mb-12">
-                <div className="flex flex-col items-center mb-16">
-                  <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter text-[#DAD5D0]">
-                    Recent Ink Spills
-                  </h2>
-                  <p className="font-mono text-[10px] tracking-[0.5em] uppercase opacity-40 mt-4 text-[#DAD5D0]">
-                    System.Log(Recent_Commits)
-                  </p>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">
+                    git_activity_stream
+                  </span>
                 </div>
 
-                <div className="space-y-4 max-w-4xl mx-auto">
+                <div className="divide-y divide-white/5 font-mono">
                   {data.commits.length > 0 ? (
-                    data.commits.map((commit, idx) => (
+                    data.commits.map((commit) => (
                       <div
-                        key={`${commit.sha}-${commit.repo}`}
-                        className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 bg-[#1A1A1A] border border-[#DAD5D0]/5 rounded-2xl p-6 hover:border-amber-500/30 transition-colors"
+                        key={commit.sha}
+                        className="grid grid-cols-12 gap-4 p-5 hover:bg-white/[0.02] transition-colors group"
                       >
-                        <div className="flex items-start md:items-center gap-4">
-                          <span className="font-mono text-[10px] font-bold text-amber-500 bg-amber-500/10 px-3 py-1.5 rounded-md uppercase">
-                            #{commit.sha}
-                          </span>
-                          <p className="font-medium text-[#DAD5D0]/80">
-                            {commit.message}
-                          </p>
+                        <div className="col-span-12 md:col-span-2 text-[10px] text-amber-500/50">
+                          [{commit.sha}]
                         </div>
-                        <div className="flex items-center gap-6 shrink-0">
-                          <span className="font-mono text-[10px] uppercase text-[#DAD5D0]/40">
-                            {commit.repo.split("/")[1]}
-                          </span>
-                          <p className="font-mono text-[10px] uppercase font-bold text-amber-500 tracking-widest hidden sm:block">
-                            {commit.time}
-                          </p>
+                        <div className="col-span-12 md:col-span-6 text-sm text-white/70 group-hover:text-white">
+                          {commit.message}
+                        </div>
+                        <div className="col-span-6 md:col-span-2 text-[9px] uppercase text-white/30 text-right md:text-left">
+                          {commit.repo.split("/")[1]}
+                        </div>
+                        <div className="col-span-6 md:col-span-2 text-[9px] uppercase text-amber-500/80 text-right">
+                          {commit.time}
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="text-center p-12 bg-[#1A1A1A] border border-[#DAD5D0]/5 rounded-3xl">
-                      <p className="text-[#DAD5D0]/40 italic">
-                        No recent public commit events found.
-                      </p>
+                    <div className="p-20 text-center text-xs opacity-20">
+                      NO_DATA_LOGGED
                     </div>
                   )}
                 </div>
-              </section>
-            </>
-          )}
-        </div>
+              </div>
+            </section>
+
+            {/* CTA SECTION: High-Contrast Technical Container */}
+            <section className="relative group">
+              {/* Outer Glowing Border */}
+              <div className="absolute -inset-[1px] bg-gradient-to-r from-amber-500/40 via-white/5 to-amber-500/40 rounded-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+
+              <div className="relative bg-[#0C0C0C] rounded-sm p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-12 overflow-hidden">
+                {/* Background Watermark */}
+                <div className="absolute top-0 right-0 text-[160px] leading-none font-black text-white/[0.02] select-none translate-x-1/4 translate-y-[-10%] group-hover:text-amber-500/[0.04] transition-colors font-mono uppercase tracking-tighter">
+                  Connect
+                </div>
+
+                <div className="relative z-10 space-y-6 max-w-xl text-center md:text-left">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full mb-4">
+                    <span className="w-1.5 h-1.5 bg-amber-500 animate-pulse rounded-full" />
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-amber-500">
+                      Status: Accepting Projects
+                    </span>
+                  </div>
+
+                  <h3 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase italic leading-[0.85] text-white">
+                    Let's Build <br />{" "}
+                    <span className="text-amber-500">The Future.</span>
+                  </h3>
+                  <p className="font-mono text-sm text-white/40 leading-relaxed uppercase tracking-wide">
+                    Scaling architecture // AI integration // Full-stack
+                    deployment.
+                    <br />
+                    Secure an engineering slot for Q4 2026.
+                  </p>
+                </div>
+
+                <Link
+                  href="/contact"
+                  className="relative z-10 h-24 w-24 md:h-44 md:w-44 rounded-full border border-white/10 bg-[#111] text-white flex flex-col items-center justify-center font-mono text-[10px] uppercase tracking-tighter hover:border-amber-500 hover:bg-amber-500 hover:text-black transition-all duration-500 group-hover:scale-105 shadow-2xl"
+                >
+                  <RiGitRepositoryLine size={24} className="mb-2" />
+                  <span>Contact_Op</span>
+                  {/* Rotating Orbit effect on hover */}
+                  <div className="absolute inset-2 border border-dashed border-white/10 rounded-full group-hover:rotate-180 transition-transform duration-1000" />
+                </Link>
+              </div>
+            </section>
+          </div>
+        )}
+      </div>
     </main>
   );
 }

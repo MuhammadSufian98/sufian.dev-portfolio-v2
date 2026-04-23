@@ -1,7 +1,7 @@
 import { Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
-import GlobalBackgroundLayer from "@/components/GlobalBackgroundLayer";
 import CustomLayout from "@/components/CustomLayout";
+import { ThemeProvider } from "@/context/ThemeProvider";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -28,8 +28,9 @@ export default function RootLayout({ children }) {
       className={`${jakarta.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col relative">
-        <GlobalBackgroundLayer />
-        <CustomLayout>{children}</CustomLayout>
+        <ThemeProvider>
+          <CustomLayout>{children}</CustomLayout>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -6,8 +6,10 @@ import Hero from "@/components/Home/Hero";
 import Toolbelt from "@/components/Home/Toolbelt";
 import Projects from "@/components/Home/Projects";
 import Quote from "@/components/Home/Quote";
+import { useTheme } from "@/context/ThemeProvider";
 
 export default function HomePage() {
+  const { activeTheme, themeId } = useTheme();
   const targetScrollY = useRef(0);
   const currentScrollY = useRef(0);
   const timeRef = useRef(0);
@@ -72,8 +74,8 @@ export default function HomePage() {
             gyroControls: false,
             minHeight: 200.0,
             scale: 1.0,
-            backgroundColor: 0x323130,
-            color: 0xffb347,
+            backgroundColor: activeTheme.colors.vanta.background,
+            color: activeTheme.colors.vanta.color,
           });
         }
       } catch (e) {
@@ -96,7 +98,7 @@ export default function HomePage() {
       }
       vantaEffectRef.current = null;
     };
-  }, []);
+  }, [activeTheme, themeId]);
 
   useEffect(() => {
     // Transform Origin for Perfect Zoom
@@ -268,7 +270,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="relative bg-[#323130] text-[#DCD7D3] overflow-clip min-h-screen">
+    <main className="relative theme-bg-primary theme-text-primary overflow-clip min-h-screen">
       <Hero
         heroContainerRef={heroContainerRef}
         vantaRef={vantaRef}

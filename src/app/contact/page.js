@@ -24,15 +24,15 @@ function LetterSentGraphic() {
   return (
     <div className="bg-[#1A1A1A] border border-amber-500/20 p-12 text-center max-w-xl mx-auto rounded-3xl shadow-[0_0_30px_rgba(245,158,11,0.05)] relative overflow-hidden">
       <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-amber-500/5 to-transparent opacity-50 pointer-events-none" />
-      
+
       <div className="w-24 h-24 mx-auto mb-8 bg-amber-500/10 rounded-full flex items-center justify-center border border-amber-500/20">
         <RiMailSendLine size={40} className="text-amber-500" />
       </div>
-      
+
       <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter text-[#DAD5D0] mb-4">
         Transmission Sent
       </h2>
-      
+
       <p className="text-[#DAD5D0]/60 font-mono tracking-widest uppercase text-xs">
         Signal #001 locked. Awaiting system response.
       </p>
@@ -71,30 +71,49 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#252423] text-[#DAD5D0] overflow-hidden pt-24 pb-40">
-        <div className="max-w-7xl mx-auto px-6 relative z-20">
-          
-          <Link 
-            href="/" 
-            className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] uppercase text-[#DAD5D0]/40 hover:text-amber-500 transition-colors mb-20"
-          >
-            <RiArrowLeftLine /> Back to Engine
-          </Link>
+    <main className="min-h-screen theme-bg-primary theme-text-primary selection:bg-amber-500/30 font-sans">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
+      <div className="fixed bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-amber-600/5 blur-[120px] rounded-full pointer-events-none" />
 
-          <div className="flex flex-col lg:flex-row gap-12 items-start">
-            
-            {/* MAIN FORM SECTION */}
-            <section id="contact-form" className="flex-1 w-full bg-[#1A1A1A] border border-[#DAD5D0]/10 rounded-3xl p-8 md:p-14 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="max-w-7xl mx-auto px-6 pt-32 pb-24 relative z-10">
+        {/* Navigation */}
+        <Link
+          href="/"
+          className="group inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.4em] uppercase text-white/30 hover:text-amber-500 transition-all mb-16"
+        >
+          <RiArrowLeftLine className="group-hover:-translate-x-1 transition-transform" />
+          System_Home
+        </Link>
 
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 items-start">
+          {/* LEFT: FORM INTERFACE (8 Columns) */}
+          <section className="lg:col-span-8 w-full bg-[#0D0D0D] border border-white/10 rounded-sm overflow-hidden shadow-2xl">
+            {/* Terminal Header */}
+            <div className="bg-[#1A1A1A] px-6 py-3 border-b border-white/10 flex items-center justify-between">
+              <div className="flex gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/40" />
+              </div>
+              <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">
+                uplink_connection.secure
+              </span>
+            </div>
+
+            <div className="p-8 md:p-14">
               <AnimatePresence mode="wait">
                 {isSuccess ? (
                   <motion.div
                     key="success"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     className="py-12"
                   >
                     <LetterSentGraphic />
@@ -102,58 +121,56 @@ export default function ContactPage() {
                 ) : (
                   <motion.div
                     key="form"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="relative z-10 flex flex-col h-full"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-12"
                   >
-                    <header className="mb-16">
-                      <p className="font-mono text-[10px] tracking-[0.5em] uppercase opacity-40 mb-4 text-[#DAD5D0]">
-                        System.Channel(Open)
-                      </p>
-                      <h1 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter text-[#DAD5D0] leading-none mb-6">
-                        Field Report
+                    <header>
+                      <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase italic leading-none mb-4">
+                        Field<span className="text-amber-500">.</span>Report
                       </h1>
-                      <p className="text-[#DAD5D0]/60 text-lg">
-                        Initiate a direct transmission to the central database.
+                      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">
+                        Initiate direct packet transmission to Sufian
                       </p>
                     </header>
 
-                    <form onSubmit={onSubmit} className="space-y-10 flex-1 flex flex-col">
-                      <div className="relative group">
-                        <label className="font-mono text-xs tracking-[0.2em] uppercase text-[#DAD5D0]/40 block mb-3">
-                          Subject Name
-                        </label>
-                        <input
-                          required
-                          type="text"
-                          name="name"
-                          value={form.name ?? ""}
-                          onChange={onChange}
-                          className="w-full bg-transparent border-b border-[#DAD5D0]/20 focus:border-amber-500 outline-none text-xl md:text-2xl py-3 placeholder:opacity-20 transition-colors"
-                          placeholder="Who is initiating?"
-                        />
+                    <form onSubmit={onSubmit} className="space-y-8">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Name Input */}
+                        <div className="space-y-3">
+                          <label className="font-mono text-[9px] uppercase tracking-widest text-amber-500/60">
+                            01. Source_Identity
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            name="name"
+                            value={form.name ?? ""}
+                            onChange={onChange}
+                            placeholder="NAME / ALIAS"
+                            className="w-full bg-transparent border-b border-white/10 focus:border-amber-500 outline-none text-lg py-2 font-light transition-colors placeholder:text-white/10"
+                          />
+                        </div>
+                        {/* Email Input */}
+                        <div className="space-y-3">
+                          <label className="font-mono text-[9px] uppercase tracking-widest text-amber-500/60">
+                            02. Return_Path
+                          </label>
+                          <input
+                            required
+                            type="email"
+                            name="email"
+                            value={form.email ?? ""}
+                            onChange={onChange}
+                            placeholder="EMAIL_ADDRESS"
+                            className="w-full bg-transparent border-b border-white/10 focus:border-amber-500 outline-none text-lg py-2 font-light transition-colors placeholder:text-white/10"
+                          />
+                        </div>
                       </div>
 
-                      <div className="relative group">
-                        <label className="font-mono text-xs tracking-[0.2em] uppercase text-[#DAD5D0]/40 block mb-3">
-                          Return Frequency (Email)
-                        </label>
-                        <input
-                          required
-                          type="email"
-                          name="email"
-                          value={form.email ?? ""}
-                          onChange={onChange}
-                          className="w-full bg-transparent border-b border-[#DAD5D0]/20 focus:border-amber-500 outline-none text-xl md:text-2xl py-3 placeholder:opacity-20 transition-colors"
-                          placeholder="Frequency/Email Address"
-                        />
-                      </div>
-
-                      <div className="relative group">
-                        <label className="font-mono text-xs tracking-[0.2em] uppercase text-[#DAD5D0]/40 block mb-3">
-                          Transmission Subject
+                      <div className="space-y-3">
+                        <label className="font-mono text-[9px] uppercase tracking-widest text-amber-500/60">
+                          03. Transmission_Header
                         </label>
                         <input
                           required
@@ -161,117 +178,120 @@ export default function ContactPage() {
                           name="subject"
                           value={form.subject ?? ""}
                           onChange={onChange}
-                          className="w-full bg-transparent border-b border-[#DAD5D0]/20 focus:border-amber-500 outline-none text-xl md:text-2xl py-3 placeholder:opacity-20 transition-colors"
-                          placeholder="What is this about?"
+                          placeholder="SUBJECT_LINE"
+                          className="w-full bg-transparent border-b border-white/10 focus:border-amber-500 outline-none text-lg py-2 font-light transition-colors placeholder:text-white/10"
                         />
                       </div>
 
-                      <div className="relative flex-1">
-                        <label className="font-mono text-xs tracking-[0.2em] uppercase text-[#DAD5D0]/40 block mb-4">
-                          Transmission Data
+                      <div className="space-y-3">
+                        <label className="font-mono text-[9px] uppercase tracking-widest text-amber-500/60">
+                          04. Payload_Data
                         </label>
                         <textarea
                           required
                           name="message"
                           value={form.message ?? ""}
                           onChange={onChange}
-                          className="w-full bg-[#252423] border border-[#DAD5D0]/10 rounded-2xl focus:border-amber-500 outline-none text-lg md:text-xl py-6 px-6 resize-vertical min-h-[250px] placeholder:opacity-20 transition-colors"
-                          placeholder="Start typing your payload here..."
+                          placeholder="ENTER MESSAGE BODY..."
+                          className="w-full bg-[#111] border border-white/5 rounded-sm focus:border-amber-500/50 outline-none text-base p-6 min-h-[200px] font-mono transition-all placeholder:text-white/5"
                         />
                       </div>
 
-                      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-8">
-                        
-                        <div className="hidden sm:block">
-                          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-amber-500/60">
-                            Sufian&apos;s Ledger // 2026.Q4
-                          </p>
+                      <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-6 border-t border-white/5">
+                        <div className="font-mono text-[9px] text-white/20 uppercase tracking-widest">
+                          [ STATUS: READY_TO_SEND ]
                         </div>
-
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className={`bg-amber-500 text-[#252423] py-4 px-10 rounded-full font-mono text-xs font-bold tracking-[0.2em] uppercase transition-all flex items-center gap-3 w-full sm:w-auto justify-center ${
-                            isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:scale-105 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:bg-amber-400"
+                          className={`group relative overflow-hidden bg-white text-black px-12 py-4 rounded-sm font-mono text-[10px] font-bold uppercase tracking-[0.3em] transition-all ${
+                            isSubmitting ? "opacity-50" : "hover:bg-amber-500"
                           }`}
                         >
-                          {isSubmitting ? (
-                            <>
-                              <span className="w-4 h-4 rounded-full border-2 border-[#252423] border-t-transparent animate-spin" /> 
-                              Transmitting...
-                            </>
-                          ) : (
-                            "Send Report"
-                          )}
+                          <span className="relative z-10 flex items-center gap-2">
+                            {isSubmitting
+                              ? "Transmitting..."
+                              : "Execute_Dispatch"}
+                          </span>
                         </button>
                       </div>
 
                       {error && (
-                        <div className="mt-4 border border-red-500/20 bg-red-500/5 p-4 rounded-xl text-red-400 text-sm font-medium flex items-center gap-3">
-                          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                          {error}
+                        <div className="font-mono text-[10px] text-red-500 uppercase tracking-widest p-4 border border-red-500/20 bg-red-500/5">
+                          ! Critical_Failure: {error}
                         </div>
                       )}
                     </form>
                   </motion.div>
                 )}
               </AnimatePresence>
-            </section>
+            </div>
+          </section>
 
-            {/* SIDEBAR CARBON COPY */}
-            <aside id="contact-sidebar" className="w-full lg:w-96 flex flex-col gap-8">
-              <div className="bg-[#1A1A1A] border border-[#DAD5D0]/10 p-8 rounded-3xl relative overflow-hidden shadow-2xl">
-                <div className="absolute top-4 right-4 bg-red-500/10 border border-red-500/30 text-red-500 font-mono text-[8px] uppercase tracking-widest px-2 py-1 rounded">
-                  Internal Only
-                </div>
-                
-                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-amber-500 mb-6">
-                  Carbon Copy Area
-                </h3>
-                
-                <div className="space-y-6 text-sm font-mono text-[#DAD5D0]/60">
-                  <p className="border-b border-[#DAD5D0]/10 pb-3">CC: ARCHIVE_SYSTEM_V2</p>
-                  <p className="border-b border-[#DAD5D0]/10 pb-3">DATE: {today}</p>
-                  <div className="min-h-48 bg-[#252423] border border-[#DAD5D0]/5 rounded-xl p-6 text-[#DAD5D0]/40 leading-loose break-words shadow-inner">
-                    {form.message
-                      ? `[ SYSTEM LOG ]\n\n${form.message}\n\n_`
-                      : "[ SYSTEM LOG ]\n\nReady to intercept incoming transmission.\nAwaiting manual input from user.\nCarbon copy will be generated upon dispatch.\n\n_"}
-                  </div>
-                </div>
+          {/* RIGHT: SYSTEM SPECS (4 Columns) */}
+          <aside className="lg:col-span-4 w-full space-y-6">
+            {/* Live Copy Monitor */}
+            <div className="bg-[#0D0D0D] border border-white/10 p-6 rounded-sm space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-amber-500">
+                  Live_Monitor
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
               </div>
+              <div className="bg-black/50 border border-white/5 p-4 rounded-sm">
+                <p className="font-mono text-[10px] text-white/30 leading-relaxed break-all uppercase">
+                  {form.message
+                    ? `> ${form.message.substring(0, 200)}${form.message.length > 200 ? "..." : ""}`
+                    : "> Awaiting input sequence..."}
+                </p>
+              </div>
+              <div className="flex justify-between font-mono text-[8px] text-white/20">
+                <span>TS: {today}</span>
+                <span>LOC: PK_NODE_01</span>
+              </div>
+            </div>
 
-              {/* SYSTEMS ALCHEMIST CARD */}
-              <div className="bg-[#1A1A1A] border border-[#DAD5D0]/10 p-8 rounded-3xl flex flex-col items-center text-center relative overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#DAD5D0]/5 to-transparent opacity-20" />
-                
-                <div className="w-24 h-24 rounded-full border-4 border-[#252423] overflow-hidden mb-6 relative z-10 flex items-center justify-center bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.1)]">
-                  <div className="absolute inset-0 bg-[url('/assets/floating-elements.png')] bg-cover opacity-20 mix-blend-screen" />
-                  <span className="text-4xl font-black italic text-amber-500">S</span>
-                </div>
-                
-                <h3 className="font-mono text-xs tracking-widest uppercase text-[#DAD5D0] mb-2 relative z-10">
+            {/* Profile Card */}
+            <div className="bg-white text-black p-8 rounded-sm group relative overflow-hidden">
+              <div className="relative z-10">
+                <p className="font-mono text-[9px] uppercase tracking-widest opacity-60 mb-8">
+                  Lead_Alchemist
+                </p>
+                <h3 className="text-3xl font-bold uppercase tracking-tighter mb-1">
                   M. Sufian
                 </h3>
-                <p className="text-sm text-[#DAD5D0]/40 uppercase tracking-widest relative z-10">
-                  Lead Systems Alchemist
+                <p className="text-[10px] font-mono uppercase tracking-widest opacity-60 mb-8">
+                  Software Engineer
                 </p>
-                
-                <div className="mt-8 flex gap-6 relative z-10">
-                  <a href="https://github.com" target="_blank" rel="noreferrer" className="text-[#DAD5D0]/40 hover:text-amber-500 transition-colors">
-                    <RiTerminalBoxLine size={20} />
+
+                <div className="flex gap-4">
+                  <a
+                    href="#"
+                    className="p-2 border border-black/10 hover:bg-black hover:text-white transition-colors"
+                  >
+                    <RiTerminalBoxLine size={18} />
                   </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-[#DAD5D0]/40 hover:text-amber-500 transition-colors">
-                    <RiDatabase2Line size={20} />
+                  <a
+                    href="#"
+                    className="p-2 border border-black/10 hover:bg-black hover:text-white transition-colors"
+                  >
+                    <RiDatabase2Line size={18} />
                   </a>
-                  <a href="#" className="text-[#DAD5D0]/40 hover:text-amber-500 transition-colors">
-                    <RiLinkM size={20} />
+                  <a
+                    href="#"
+                    className="p-2 border border-black/10 hover:bg-black hover:text-white transition-colors"
+                  >
+                    <RiLinkM size={18} />
                   </a>
                 </div>
               </div>
-            </aside>
-
-          </div>
+              <div className="absolute bottom-[-20%] right-[-10%] text-black/[0.03] scale-150 rotate-12 group-hover:text-amber-500/10 transition-colors">
+                <RiMailSendLine size={200} />
+              </div>
+            </div>
+          </aside>
         </div>
+      </div>
     </main>
   );
 }

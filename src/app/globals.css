@@ -1,17 +1,63 @@
 @import "tailwindcss";
 
 :root {
-  --obsidian: #323130;
-  --stone: #dcd7d3;
+  --obsidian: #080808;
+  --stone: #f4f1ec;
   --golden-amber: #ffb347;
-  --obsidian-deep: #252423;
+  --obsidian-deep: #0d0d0d;
   --golden-shadow: rgba(212, 143, 41, 0.15);
+
+  --bg-primary: #080808;
+  --bg-secondary: #0d0d0d;
+  --bg-elevated: #1a1a1a;
+  --bg-inverse: #f4f1ec;
+
+  --text-heading: #f4f1ec;
+  --text-subheading: #dcd7d3;
+  --text-paragraph: #a6a6a6;
+  --text-muted: #777777;
+  --text-inverse: #121212;
+
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 179, 71, 0.45);
+  --accent-soft: rgba(255, 179, 71, 0.14);
+  --accent-contrast: #111111;
+  --success: #22c55e;
+  --grid-color: rgba(255, 255, 255, 0.08);
 
   --background: var(--obsidian);
   --foreground: var(--stone);
   --surface-light: var(--stone);
   --surface-dark: var(--obsidian);
   --accent: var(--golden-amber);
+}
+
+html[data-theme="light"] {
+  --obsidian: #f4f1ea;
+  --stone: #171717;
+  --obsidian-deep: #f4f1ea;
+  --golden-amber: #bf701c;
+
+  --bg-primary: #f4f1ea;
+  --bg-secondary: #f4f1ea;
+  --bg-elevated: #f4f1ea;
+  --bg-inverse: #171717;
+
+  --text-heading: #171717;
+  --text-subheading: #3f3f3f;
+  --text-paragraph: #525252;
+  --text-muted: #717171;
+  --text-inverse: #f4f1ea;
+
+  --border-subtle: rgba(40, 34, 26, 0.16);
+  --border-strong: rgba(191, 112, 28, 0.35);
+  --accent-soft: rgba(191, 112, 28, 0.14);
+  --accent-contrast: #ffffff;
+  --success: #0e9f6e;
+  --grid-color: rgba(46, 39, 31, 0.08);
+
+  --background: var(--obsidian);
+  --foreground: var(--stone);
 }
 
 @theme inline {
@@ -30,18 +76,149 @@ body {
   color: var(--foreground);
   font-family: var(--font-jakarta), sans-serif;
   background-image:
-    radial-gradient(circle at 15% 10%, rgba(255, 179, 71, 0.08), transparent 42%),
-    radial-gradient(circle at 82% 28%, rgba(255, 179, 71, 0.06), transparent 44%),
-    linear-gradient(165deg, #2d2c2b, #323130 58%, #2a2928);
+    radial-gradient(circle at 15% 10%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 42%),
+    radial-gradient(circle at 82% 28%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 44%),
+    linear-gradient(165deg, color-mix(in srgb, var(--bg-primary) 94%, black), var(--bg-primary) 58%, color-mix(in srgb, var(--bg-secondary) 86%, black));
 }
 
 * {
-  border-color: rgba(255, 179, 71, 0.18);
+  border-color: var(--border-subtle);
 }
 
 ::selection {
-  background: rgba(255, 179, 71, 0.3);
-  color: #1f1e1d;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--accent-contrast);
+}
+
+.theme-bg-primary {
+  background-color: var(--bg-primary);
+}
+
+.theme-bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.theme-bg-elevated {
+  background-color: var(--bg-elevated);
+}
+
+.theme-bg-inverse {
+  background-color: var(--bg-inverse);
+}
+
+.theme-text-primary {
+  color: var(--text-heading);
+}
+
+.theme-text-secondary {
+  color: var(--text-subheading);
+}
+
+.theme-text-paragraph {
+  color: var(--text-paragraph);
+}
+
+.theme-border-subtle {
+  border-color: var(--border-subtle);
+}
+
+.theme-border-strong {
+  border-color: var(--border-strong);
+}
+
+.theme-grid-overlay {
+  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+}
+
+/* Global remap for existing hardcoded palette classes so theme toggles apply across routes. */
+.bg-\[\#080808\],
+.bg-\[\#0A0A0A\],
+.bg-\[\#323130\] {
+  background-color: var(--bg-primary) !important;
+}
+
+.bg-\[\#0C0C0C\],
+.bg-\[\#0D0D0D\],
+.bg-\[\#111\],
+.bg-\[\#252423\] {
+  background-color: var(--bg-secondary) !important;
+}
+
+.bg-\[\#1A1A1A\] {
+  background-color: var(--bg-elevated) !important;
+}
+
+.bg-\[\#F5F5F5\] {
+  background-color: var(--bg-primary) !important;
+}
+
+.bg-\[\#DAD5D0\],
+.bg-\[\#DCD7D3\] {
+  background-color: var(--bg-inverse) !important;
+}
+
+.bg-white {
+  background-color: var(--bg-inverse) !important;
+}
+
+.text-\[\#E0E0E0\],
+.text-\[\#DAD5D0\],
+.text-\[\#DCD7D3\],
+.text-white,
+.text-white\/80,
+.text-white\/70 {
+  color: var(--text-heading) !important;
+}
+
+.text-white\/60,
+.text-white\/50,
+.text-white\/40,
+.text-white\/30 {
+  color: var(--text-subheading) !important;
+}
+
+.text-white\/20,
+.text-white\/10,
+.text-white\/5,
+.opacity-20.text-white,
+.opacity-30.text-white,
+.opacity-40.text-white {
+  color: var(--text-muted) !important;
+}
+
+.text-black,
+.text-\[\#080808\] {
+  color: var(--text-inverse) !important;
+}
+
+.text-\[\#171717\] {
+  color: var(--text-heading) !important;
+}
+
+.text-\[\#252423\],
+.text-\[\#323130\] {
+  color: var(--text-inverse) !important;
+}
+
+.border-white\/10,
+.border-white\/5,
+.border-\[\#DAD5D0\]\/10,
+.border-\[\#DAD5D0\]\/5 {
+  border-color: var(--border-subtle) !important;
+}
+
+.border-black\/10,
+.border-black\/5 {
+  border-color: var(--border-subtle) !important;
+}
+
+.bg-black\/5,
+.bg-black\/50,
+.bg-white\/5,
+.bg-white\/\[0\.02\],
+.hover\:bg-white\/\[0\.02\]:hover {
+  background-color: color-mix(in srgb, var(--bg-inverse) 8%, transparent) !important;
 }
 
 @keyframes scan {
@@ -64,19 +241,4 @@ body {
 .skill-card:hover {
   transform: rotateY(0deg) rotateX(0deg) !important;
   z-index: 50;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  html,
-  body,
-  a,
-  button,
-  input,
-  textarea,
-  select,
-  label,
-  [role="button"],
-  [class*="cursor-"] {
-    cursor: none !important;
-  }
 }

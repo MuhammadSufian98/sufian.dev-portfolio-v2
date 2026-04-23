@@ -4,7 +4,6 @@ import { useCallback, useState } from "react";
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 import Footer from "./Footer";
-import CustomCursor from "./CustomCursor";
 
 // Paths where Header and Footer should NOT render
 const EXCLUDED_PATHS = [];
@@ -19,7 +18,6 @@ const CustomLayout = ({ children }) => {
 
   return (
     <>
-      {!shouldHideLayout && <CustomCursor />}
       {!shouldHideLayout && (
         <Header isBooting={isBooting} onBootComplete={handleBootComplete} />
       )}

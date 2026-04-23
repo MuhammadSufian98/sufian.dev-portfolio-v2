@@ -1,59 +1,75 @@
 "use client";
 
-import Image from "next/image";
+import React from "react";
 import { TOOLBELT_ITEMS } from "./constants";
+import { RiArrowRightLine, RiCheckboxCircleLine } from "react-icons/ri";
 
 export default function Toolbelt() {
   return (
-    <section id="toolbelt" className="relative py-40 z-20 pointer-events-none">
-      <div className="max-w-7xl mx-auto px-6 pointer-events-auto">
-        <div className="flex flex-col items-center mb-24">
-          <p className="font-mono text-[10px] tracking-[0.5em] uppercase opacity-55 mb-4 text-[#DCD7D3]">
-            System.Initialize(Capabilities)
-          </p>
-          <h2 className="text-5xl font-black uppercase italic tracking-tighter text-[#DCD7D3]">
-            The Toolbelt
+    <section
+      id="toolbelt"
+      className="relative theme-bg-primary py-32 overflow-hidden selection:bg-amber-500/30"
+    >
+      {/* Background Grid & Glow */}
+      <div
+        className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
+      <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-amber-600/5 blur-[100px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <header className="flex flex-col items-center mb-24 text-center">
+          <div className="bg-[#080808] px-4 py-1 border border-white/10 rounded-full mb-6">
+            <p className="font-mono text-[9px] tracking-[0.5em] uppercase text-white/40">
+              Core Skills
+            </p>
+          </div>
+          <h2 className="text-5xl md:text-7xl font-bold uppercase italic tracking-tighter text-white leading-none">
+            Tech <span className="text-amber-500">Stack</span>
           </h2>
-        </div>
+        </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8" style={{ perspective: "2000px" }}>
-          {TOOLBELT_ITEMS.map((tech) => (
-            <div
-              key={tech.name}
-              className="toolbelt-card group relative h-80 opacity-100 will-change-transform"
-              style={{ transform: "rotateY(0deg)" }}
-            >
-              <div className="magnetic-target absolute inset-0 bg-[#252423] border border-[#FFB347]/20 rounded-[2rem] p-8 flex flex-col items-center justify-center transition-all duration-500 overflow-hidden hover:border-[#FFB347]/50 hover:shadow-[0_20px_50px_rgba(212,143,41,0.15)] hover:-translate-y-2">
-                <div className="absolute top-6 right-6">
-                  <div className="w-3 h-3 rounded-full bg-[#FFB347] animate-pulse" />
-                  <div className="absolute inset-0 w-3 h-3 rounded-full bg-[#FFB347] blur-md opacity-80 animate-pulse" />
-                </div>
-
-                <div className="relative z-10 flex flex-col items-center pointer-events-none">
-                  <div className="w-16 h-16 mb-6 relative transition-all duration-500">
-                    <Image
-                      src={tech.icon}
-                      alt={tech.name}
-                      fill
-                      sizes="4rem"
-                      className={`object-contain transition-all duration-500 ${tech.name !== "Next.js" ? "grayscale group-hover:grayscale-0" : ""}`}
-                    />
-                  </div>
-                  <h3 className="text-xl font-black uppercase tracking-widest text-[#DCD7D3]">
+        {/* HORIZONTAL FLOW CONTAINER */}
+        <div className="relative flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+          {TOOLBELT_ITEMS.map((tech, index) => (
+            <React.Fragment key={tech.name}>
+              {/* Skill Node */}
+              <div className="group relative w-full md:w-48 bg-[#0D0D0D] border border-white/5 p-6 hover:border-amber-500/40 transition-all duration-500">
+                <div className="flex flex-col gap-4">
+                  <span className="font-mono text-[8px] text-white/20 uppercase tracking-tighter">
+                    Skill 0{index + 1}
+                  </span>
+                  <h3 className="text-sm font-bold font-mono text-white group-hover:text-amber-500 transition-colors uppercase">
                     {tech.name}
                   </h3>
+                  <div className="flex items-center gap-2">
+                    <RiCheckboxCircleLine
+                      className="text-amber-500/40"
+                      size={12}
+                    />
+                    <span className="font-mono text-[9px] text-white/30 uppercase">
+                      {tech.tag}
+                    </span>
+                  </div>
                 </div>
-
-                <div className="absolute bottom-6 flex justify-between w-full px-8 opacity-40 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  <span className="font-mono text-[9px] font-bold tracking-tighter text-[#DCD7D3]">
-                    {tech.tag}
-                  </span>
-                  <span className="font-mono text-[9px] font-bold tracking-wider text-[#FFB347]">
-                    STATUS: ACTIVE
-                  </span>
-                </div>
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-amber-500 group-hover:w-full transition-all duration-500" />
               </div>
-            </div>
+
+              {/* Connector Arrow */}
+              {index < TOOLBELT_ITEMS.length - 1 && (
+                <div className="hidden md:flex flex-1 items-center justify-center">
+                  <div className="h-[1px] w-full bg-gradient-to-r from-amber-500/50 to-transparent relative mx-2">
+                    <RiArrowRightLine
+                      className="absolute right-0 -top-[6px] text-amber-500 animate-pulse"
+                      size={14}
+                    />
+                  </div>
+                </div>
+              )}
+            </React.Fragment>
           ))}
         </div>
       </div>
