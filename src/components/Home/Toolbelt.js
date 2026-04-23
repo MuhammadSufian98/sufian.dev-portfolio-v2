@@ -33,24 +33,24 @@ export default function Toolbelt() {
         </header>
 
         {/* HORIZONTAL FLOW CONTAINER */}
-        <div className="relative flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+        <div className="relative flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 md:gap-2 overflow-x-auto md:overflow-visible -mx-6 px-6 md:mx-0 md:px-0">
           {TOOLBELT_ITEMS.map((tech, index) => (
             <React.Fragment key={tech.name}>
               {/* Skill Node */}
-              <div className="group relative w-full md:w-48 bg-[#0D0D0D] border border-white/5 p-6 hover:border-amber-500/40 transition-all duration-500">
-                <div className="flex flex-col gap-4">
-                  <span className="font-mono text-[8px] text-white/20 uppercase tracking-tighter">
+              <div className="group relative flex-1 md:flex-none md:w-44 min-w-[140px] md:min-w-fit bg-[#0D0D0D] border border-white/5 p-4 md:p-6 hover:border-amber-500/40 transition-all duration-500">
+                <div className="flex flex-col gap-2 md:gap-4">
+                  <span className="font-mono text-[7px] md:text-[8px] text-white/20 uppercase tracking-tighter">
                     Skill 0{index + 1}
                   </span>
-                  <h3 className="text-sm font-bold font-mono text-white group-hover:text-amber-500 transition-colors uppercase">
+                  <h3 className="text-xs md:text-sm font-bold font-mono text-white group-hover:text-amber-500 transition-colors uppercase">
                     {tech.name}
                   </h3>
                   <div className="flex items-center gap-2">
                     <RiCheckboxCircleLine
-                      className="text-amber-500/40"
+                      className="text-amber-500/40 flex-shrink-0"
                       size={12}
                     />
-                    <span className="font-mono text-[9px] text-white/30 uppercase">
+                    <span className="font-mono text-[8px] md:text-[9px] text-white/30 uppercase truncate">
                       {tech.tag}
                     </span>
                   </div>

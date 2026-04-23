@@ -151,37 +151,37 @@ export default async function GitHubArchivePage() {
 
       <div className="max-w-7xl mx-auto px-6 pt-32 pb-24 relative z-10">
         {/* HEADER: Technical Identity */}
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20 border-l-2 border-amber-500 pl-8">
+        <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8 mb-16 md:mb-20 border-l-2 border-amber-500 pl-4 sm:pl-6 md:pl-8">
           <div className="space-y-2">
             <Link
               href="/"
-              className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/40 hover:text-amber-500 transition-colors flex items-center gap-2 mb-4"
+              className="font-mono text-[9px] sm:text-[10px] tracking-[0.4em] uppercase text-white/40 hover:text-amber-500 transition-colors inline-flex items-center gap-2 mb-4"
             >
-              <RiArrowLeftLine /> Root_Directory
+              <RiArrowLeftLine className="flex-shrink-0" /> <span className="truncate">Root_Directory</span>
             </Link>
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-tighter uppercase leading-none">
               Sufian<span className="text-amber-500">.</span>Archive
             </h1>
-            <p className="text-white/40 font-mono text-xs uppercase tracking-widest">
+            <p className="text-white/40 font-mono text-[8px] sm:text-xs uppercase tracking-widest">
               Automated Documentation & Git Metrics // Version 2026.4.23
             </p>
           </div>
 
           {!error && (
-            <div className="flex flex-wrap gap-1">
-              <div className="bg-[#111] border border-white/5 p-4 rounded-sm hover:bg-amber-500 hover:text-black transition-all group cursor-default">
-                <p className="text-[9px] font-mono uppercase tracking-tighter opacity-60">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
+              <div className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-sm hover:bg-amber-500 hover:text-black transition-all group cursor-default">
+                <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-tighter opacity-60">
                   Commits_YTD
                 </p>
-                <p className="text-3xl font-bold leading-none">
+                <p className="text-2xl sm:text-3xl font-bold leading-none">
                   {formatNumber(data.totalContributions)}
                 </p>
               </div>
-              <div className="bg-[#111] border border-white/5 p-4 rounded-sm hover:bg-amber-500 hover:text-black transition-all group cursor-default">
-                <p className="text-[9px] font-mono uppercase tracking-tighter opacity-60">
+              <div className="bg-[#111] border border-white/5 p-3 sm:p-4 rounded-sm hover:bg-amber-500 hover:text-black transition-all group cursor-default">
+                <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-tighter opacity-60">
                   Repo_Count
                 </p>
-                <p className="text-3xl font-bold leading-none">
+                <p className="text-2xl sm:text-3xl font-bold leading-none">
                   {formatNumber(data.user.public_repos)}
                 </p>
               </div>
@@ -260,25 +260,25 @@ export default async function GitHubArchivePage() {
               {/* Outer Glowing Border */}
               <div className="absolute -inset-[1px] bg-gradient-to-r from-amber-500/40 via-white/5 to-amber-500/40 rounded-sm opacity-50 group-hover:opacity-100 transition-opacity" />
 
-              <div className="relative bg-[#0C0C0C] rounded-sm p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-12 overflow-hidden">
+              <div className="relative bg-[#0C0C0C] rounded-sm p-8 sm:p-12 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12 overflow-hidden">
                 {/* Background Watermark */}
-                <div className="absolute top-0 right-0 text-[160px] leading-none font-black text-white/[0.02] select-none translate-x-1/4 translate-y-[-10%] group-hover:text-amber-500/[0.04] transition-colors font-mono uppercase tracking-tighter">
+                <div className="absolute top-0 right-0 text-[100px] sm:text-[160px] leading-none font-black text-white/[0.02] select-none translate-x-1/4 translate-y-[-10%] group-hover:text-amber-500/[0.04] transition-colors font-mono uppercase tracking-tighter">
                   Connect
                 </div>
 
-                <div className="relative z-10 space-y-6 max-w-xl text-center md:text-left">
+                <div className="relative z-10 space-y-4 sm:space-y-6 max-w-xl text-center lg:text-left">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full mb-4">
-                    <span className="w-1.5 h-1.5 bg-amber-500 animate-pulse rounded-full" />
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-amber-500">
+                    <span className="w-1.5 h-1.5 bg-amber-500 animate-pulse rounded-full flex-shrink-0" />
+                    <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-amber-500 truncate">
                       Status: Accepting Projects
                     </span>
                   </div>
 
-                  <h3 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase italic leading-[0.85] text-white">
+                  <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter uppercase italic leading-[0.85] text-white">
                     Let's Build <br />{" "}
                     <span className="text-amber-500">The Future.</span>
                   </h3>
-                  <p className="font-mono text-sm text-white/40 leading-relaxed uppercase tracking-wide">
+                  <p className="font-mono text-xs sm:text-sm text-white/40 leading-relaxed uppercase tracking-wide">
                     Scaling architecture // AI integration // Full-stack
                     deployment.
                     <br />
@@ -288,7 +288,7 @@ export default async function GitHubArchivePage() {
 
                 <Link
                   href="/contact"
-                  className="relative z-10 h-24 w-24 md:h-44 md:w-44 rounded-full border border-white/10 bg-[#111] text-white flex flex-col items-center justify-center font-mono text-[10px] uppercase tracking-tighter hover:border-amber-500 hover:bg-amber-500 hover:text-black transition-all duration-500 group-hover:scale-105 shadow-2xl"
+                  className="relative z-10 h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-44 lg:w-44 rounded-full border border-white/10 bg-[#111] text-white flex flex-col items-center justify-center font-mono text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-tighter hover:border-amber-500 hover:bg-amber-500 hover:text-black transition-all duration-500 group-hover:scale-105 shadow-2xl flex-shrink-0"
                 >
                   <RiGitRepositoryLine size={24} className="mb-2" />
                   <span>Contact_Op</span>

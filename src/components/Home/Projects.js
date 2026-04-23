@@ -40,7 +40,7 @@ export default function Projects() {
               Featured Work
             </p>
           </div>
-          <h2 className="text-6xl md:text-9xl font-bold uppercase italic tracking-tighter text-white leading-none">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-bold uppercase italic tracking-tighter text-white leading-none">
             Featured <br />{" "}
             <span className="text-white/10 font-sans italic">Projects.</span>
           </h2>
@@ -60,8 +60,8 @@ export default function Projects() {
               </div>
 
               {/* PROJECT SCHEMATIC CARD */}
-              <div className="w-full md:w-[46%] pl-12 md:pl-0">
-                <div className="group relative bg-[#0D0D0D] border border-white/5 p-10 hover:border-amber-500/20 transition-all duration-500">
+              <div className="w-full md:w-[46%] pl-8 sm:pl-12 md:pl-0">
+                <div className="group relative bg-[#0D0D0D] border border-white/5 p-6 sm:p-8 md:p-10 hover:border-amber-500/20 transition-all duration-500">
                   <div className="absolute top-0 right-0 p-8 font-mono text-[80px] font-black text-white/[0.02] leading-none select-none group-hover:text-amber-500/[0.03] transition-colors">
                     0{i + 1}
                   </div>
@@ -77,7 +77,7 @@ export default function Projects() {
                       <RiNodeTree className="text-white/10 group-hover:text-amber-500/40 transition-colors" />
                     </header>
 
-                    <h3 className="text-4xl md:text-5xl font-bold uppercase italic tracking-tighter text-white group-hover:text-amber-500 transition-colors leading-none">
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold uppercase italic tracking-tighter text-white group-hover:text-amber-500 transition-colors leading-none">
                       {proj}
                     </h3>
 

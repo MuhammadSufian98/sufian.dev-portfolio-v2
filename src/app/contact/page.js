@@ -135,14 +135,14 @@ export default function ContactPage() {
               </span>
             </div>
 
-            <div className="p-8 md:p-14">
+            <div className="p-6 sm:p-8 md:p-12 lg:p-14">
               <AnimatePresence mode="wait">
                 {!CONTACT_ENABLED ? (
                   <motion.div
                     key="disabled"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="py-12"
+                    className="py-8 sm:py-12"
                   >
                     <FeatureWIPGraphic />
                   </motion.div>
@@ -163,10 +163,10 @@ export default function ContactPage() {
                     className="space-y-12"
                   >
                     <header>
-                      <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase italic leading-none mb-4">
+                      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter uppercase italic leading-none mb-4">
                         Field<span className="text-amber-500">.</span>Report
                       </h1>
-                      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">
+                      <p className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-white/30">
                         Initiate direct packet transmission to Sufian
                       </p>
                     </header>
